@@ -1,52 +1,42 @@
+from util import *
 import streamlit as st
-import numpy as np
-import tensorflow as tf
-from tensorflow.keras.datasets import imdb
-from tensorflow.keras.preprocessing import sequence
-from tensorflow.keras.models import load_model
 
-# Load the IMDB dataset word index
-word_index = imdb.get_word_index()
+# Initialize streamlit app
+page_title = "Movie Review Sentiment Analysis "
+page_icon = "🎬"
+st.set_page_config(page_title=page_title, page_icon=page_icon, layout="centered")
 
+# Configure "About" Sidebar
+configure_about_sidebar()
 
-@st.cache_resource
-def load_rnn_model():
-    print('Model has been loaded successfully!')
-    # Load the pre-trained model with ReLU activation
-    return load_model('simple_rnn_imdb.h5')
+st.title(page_title)
+st.write(':blue[***Unleash the True Emotion Behind Reviews 🎬💬❤️***]')
+st.write('This application analyzes movie reviews 🎥📝 to determine whether the sentiment is '
+         'positive 😊 or negative 😠, helping you understand the true feelings 💭 behind every critique.')
 
+st.subheader('Movie Review:')
+user_input = st.text_area('Movie Review', label_visibility='collapsed', placeholder='Enter a Movie Review')
+analyze_button = st.button('Analyze', type='primary', disabled=not user_input)
 
-# Function to preprocess user input
-def preprocess_text(text):
-    words = text.lower().split()
-    encoded_review = [word_index.get(word, 2) + 3 for word in words]
-    padded_review = sequence.pad_sequences([encoded_review], maxlen=500)
-    return padded_review
+if analyze_button:
 
-
-# Prediction function
-def predict_sentiment(preprocessed_input, model):
-    prediction = model.predict(preprocessed_input)
-    sentiment = 'Positive' if prediction[0][0] > 0.5 else 'Negative'
-    return sentiment, prediction[0][0]
-
-
-model = load_rnn_model()
-
-st.title('IMDB Movie Review Sentiment Analysis')
-st.write('Enter a movie review to determine if it is a positive or negative sentiment')
-
-user_input = st.text_area('Movie Review')
-classify_button = st.button('Classify', type='primary', disabled=not user_input)
-
-if classify_button:
+    # Preprocess the user input -- Lower case + encoding + padding
     preprocess_input = preprocess_text(user_input)
+
+    # Load the RNN model
+    model = load_rnn_model()
+
+    # Predict sentiment of movie review
     sentiment, prediction = predict_sentiment(preprocess_input, model)
 
+    st.subheader('Sentiment Analysis:')
+
+    # Consider positive sentiment if prediction score is more than 0.5
     if prediction > 0.5:
         st.write(f'Sentiment: :green[***{sentiment}***]')
+        st.write(f'Prediction Score: :green[{prediction:.2f}]')
     else:
         st.write(f'Sentiment: :red[***{sentiment}***]')
+        st.write(f'Prediction Score: :red[{prediction:.2f}]')
 
-    st.write(f'User Input: {user_input}')
-    st.write(f'Prediction Score: {prediction:.2f}')
+
