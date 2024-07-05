@@ -10,12 +10,6 @@ def load_imdb_word_index():
     return imdb.get_word_index()
 
 
-@st.cache_resource
-def load_rnn_model():
-    # Load the pre-trained model with ReLU activation
-    return load_model('simple_rnn_imdb.keras')
-
-
 # Function to preprocess user input
 def preprocess_text(text):
     word_index = load_imdb_word_index()

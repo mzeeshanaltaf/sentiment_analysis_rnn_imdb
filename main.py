@@ -1,6 +1,13 @@
 from util import *
 import streamlit as st
 
+
+@st.cache_resource
+def load_rnn_model():
+    # Load the pre-trained model with ReLU activation
+    return load_model('simple_rnn_imdb.keras')
+
+
 # Initialize streamlit app
 page_title = "Movie Review Sentiment Analysis "
 page_icon = "🎬"
