@@ -2,12 +2,28 @@ import streamlit as st
 from tensorflow.keras.datasets import imdb
 from tensorflow.keras.preprocessing import sequence
 from tensorflow.keras.models import load_model
+import requests
+import io
+import h5py
 
 
 @st.cache_resource
 def load_imdb_word_index():
     # Load the IMDB dataset word index
     return imdb.get_word_index()
+
+
+# Load the pre-trained model with ReLU activation
+@st.cache_resource
+def load_rnn_model():
+    url = 'https://raw.githubusercontent.com/mzeeshanaltaf/sentiment_analysis_rnn_imdb/main/simple_rnn_imdb.keras'
+    response = requests.get(url)
+    model_file = io.BytesIO(response.content)
+
+    with h5py.File(model_file, 'r') as h5file:
+        model = load_model(h5file)
+
+    return model
 
 
 # Function to preprocess user input

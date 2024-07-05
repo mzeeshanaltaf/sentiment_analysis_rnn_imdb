@@ -1,11 +1,7 @@
+import io
+
 from util import *
 import streamlit as st
-
-
-@st.cache_resource
-def load_rnn_model():
-    # Load the pre-trained model with ReLU activation
-    return load_model('simple_rnn_imdb.keras')
 
 
 # Initialize streamlit app
@@ -46,5 +42,3 @@ if analyze_button:
     else:
         st.write(f'Sentiment: :red[***{sentiment}***]')
         st.write(f'Prediction Score: :red[{prediction:.2f}]')
-
-
