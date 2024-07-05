@@ -1,5 +1,3 @@
-import io
-
 from util import *
 import streamlit as st
 
@@ -28,7 +26,8 @@ if analyze_button:
     preprocess_input = preprocess_text(user_input)
 
     # Load the RNN model
-    model = load_rnn_model()
+    # model = load_rnn_model()
+    model = load_model('simple_rnn_imdb.keras')
 
     # Predict sentiment of movie review
     sentiment, prediction = predict_sentiment(preprocess_input, model)
