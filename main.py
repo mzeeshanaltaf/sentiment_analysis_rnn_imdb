@@ -6,6 +6,7 @@ page_title = "Movie Review Sentiment Analysis "
 page_icon = "🎬"
 st.set_page_config(page_title=page_title, page_icon=page_icon, layout="centered")
 
+st.logo('sent_analysis.jpg', icon_image='sent_analysis.jpg')
 # Configure "About" Sidebar
 configure_about_sidebar()
 
